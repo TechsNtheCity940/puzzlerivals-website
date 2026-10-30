@@ -31,8 +31,10 @@ jobs:
           test -f style.css
           test -f CNAME
           test -f game/index.html
-          test -f game/Build/PuzzleRivals-WebGL.wasm
-          test -f game/Build/PuzzleRivals-WebGL.data
+          test -f game/Build/PuzzleRivals-WebGL.loader.js
+          test -f game/Build/PuzzleRivals-WebGL.wasm.gz
+          test -f game/Build/PuzzleRivals-WebGL.data.gz
+          test -f game/Build/PuzzleRivals-WebGL.framework.js.gz
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5

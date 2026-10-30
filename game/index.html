@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | Puzzle_rivalS</title>
+    <title>Unity Web Player | PuzzleRivals</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
@@ -20,7 +20,7 @@
       <div id="unity-footer">
         <div id="unity-logo-title-footer"></div>
         <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">Puzzle_rivalS</div>
+        <div id="unity-build-title">PuzzleRivals</div>
       </div>
     </div>
     <script>
@@ -51,17 +51,38 @@
         updateBannerVisibility();
       }
 
+      // GitHub Pages does not set Content-Encoding for .gz assets. Decompress
+      // Unity's gzip build in the browser and restore the MIME type Unity expects.
+      (function () {
+        const nativeFetch = window.fetch.bind(window);
+        window.fetch = async function (input, init) {
+          const url = typeof input === 'string' ? input : input.url;
+          const response = await nativeFetch(input, init);
+          if (!response.ok || !/\.gz(?:\?|$)/i.test(url)) return response;
+          if (typeof DecompressionStream === 'undefined') {
+            throw new Error('This browser does not support gzip decompression required by the game.');
+          }
+          const headers = new Headers(response.headers);
+          headers.delete('content-encoding');
+          headers.delete('content-length');
+          if (/\.wasm\.gz(?:\?|$)/i.test(url)) headers.set('Content-Type', 'application/wasm');
+          else if (/\.framework\.js\.gz(?:\?|$)/i.test(url)) headers.set('Content-Type', 'application/javascript');
+          else headers.set('Content-Type', 'application/octet-stream');
+          const body = response.body.pipeThrough(new DecompressionStream('gzip'));
+          return new Response(body, { status: response.status, statusText: response.statusText, headers });
+        };
+      })();
       var buildUrl = "Build";
       var loaderUrl = buildUrl + "/PuzzleRivals-WebGL.loader.js";
       var config = {
         arguments: [],
-        dataUrl: buildUrl + "/PuzzleRivals-WebGL.data",
-        frameworkUrl: buildUrl + "/PuzzleRivals-WebGL.framework.js",
-        codeUrl: buildUrl + "/PuzzleRivals-WebGL.wasm",
+        dataUrl: buildUrl + "/PuzzleRivals-WebGL.data.gz",
+        frameworkUrl: buildUrl + "/PuzzleRivals-WebGL.framework.js.gz",
+        codeUrl: buildUrl + "/PuzzleRivals-WebGL.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
-        companyName: "TechsInTheCity940",
-        productName: "Puzzle_rivalS",
-        productVersion: "0.1.0",
+        companyName: "DefaultCompany",
+        productName: "PuzzleRivals",
+        productVersion: "1.0",
         showBanner: unityShowBanner,
         // errorHandler: function(err, url, line) {
         //    alert("error " + err + " occurred at line " + line);
