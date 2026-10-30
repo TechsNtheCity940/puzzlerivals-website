@@ -51,33 +51,38 @@
         updateBannerVisibility();
       }
 
-      // GitHub Pages does not set Content-Encoding for .gz assets. Decompress
-      // Unity's gzip build in the browser and restore the MIME type Unity expects.
+      // GitHub Pages serves .gz as application/gzip but does not add Content-Encoding.
+      // Unity therefore receives gzip bytes instead of the decoded WebGL payload.
+      // Keep the small framework script uncompressed; decode data/wasm responses here.
       (function () {
         const nativeFetch = window.fetch.bind(window);
         window.fetch = async function (input, init) {
           const url = typeof input === 'string' ? input : input.url;
           const response = await nativeFetch(input, init);
-          if (!response.ok || !/\.gz(?:\?|$)/i.test(url)) return response;
+          if (!response.ok || !/\.(?:data|wasm)\.gz(?:[?#]|$)/i.test(url)) return response;
           if (typeof DecompressionStream === 'undefined') {
-            throw new Error('This browser does not support gzip decompression required by the game.');
+            throw new Error('PuzzleRivals requires a browser with gzip DecompressionStream support.');
           }
           const headers = new Headers(response.headers);
           headers.delete('content-encoding');
           headers.delete('content-length');
-          if (/\.wasm\.gz(?:\?|$)/i.test(url)) headers.set('Content-Type', 'application/wasm');
-          else if (/\.framework\.js\.gz(?:\?|$)/i.test(url)) headers.set('Content-Type', 'application/javascript');
-          else headers.set('Content-Type', 'application/octet-stream');
-          const body = response.body.pipeThrough(new DecompressionStream('gzip'));
-          return new Response(body, { status: response.status, statusText: response.statusText, headers });
+          headers.set('Content-Type', /\.wasm\.gz(?:[?#]|$)/i.test(url)
+            ? 'application/wasm' : 'application/octet-stream');
+          const body = response.body
+            ? response.body.pipeThrough(new DecompressionStream('gzip'))
+            : new Blob([await response.arrayBuffer()]).stream().pipeThrough(new DecompressionStream('gzip'));
+          return new Response(body, {
+            status: response.status,
+            statusText: response.statusText,
+            headers: headers
+          });
         };
-      })();
-      var buildUrl = "Build";
+      })();      var buildUrl = "Build";
       var loaderUrl = buildUrl + "/PuzzleRivals-WebGL.loader.js";
       var config = {
         arguments: [],
         dataUrl: buildUrl + "/PuzzleRivals-WebGL.data.gz",
-        frameworkUrl: buildUrl + "/PuzzleRivals-WebGL.framework.js.gz",
+        frameworkUrl: buildUrl + "/PuzzleRivals-WebGL.framework.js",
         codeUrl: buildUrl + "/PuzzleRivals-WebGL.wasm.gz",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DefaultCompany",

@@ -34,7 +34,7 @@ jobs:
           test -f game/Build/PuzzleRivals-WebGL.loader.js
           test -f game/Build/PuzzleRivals-WebGL.wasm.gz
           test -f game/Build/PuzzleRivals-WebGL.data.gz
-          test -f game/Build/PuzzleRivals-WebGL.framework.js.gz
+          test -f game/Build/PuzzleRivals-WebGL.framework.js
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
