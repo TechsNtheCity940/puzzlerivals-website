@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090d18">
+  <meta name="description" content="Puzzle Rivals: outthink, outplay, and challenge your rivals.">
+  <title>Puzzle Rivals | Think Fast. Play Smart.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div><div class="ambient ambient-two"></div>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Puzzle Rivals home"><span class="brand-mark">PR</span><span>PUZZLE<span class="accent">RIVALS</span></span></a>
+    <a class="nav-link" href="#about">THE GAME</a>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span class="pulse"></span> THE BATTLE OF BRAINS STARTS HERE</div>
+      <h1>THINK FAST.<br><span class="gradient">PLAY SMART.</span></h1>
+      <p class="intro">Every move matters. Every puzzle is a new challenge. Do you have what it takes to outthink your rivals?</p>
+      <a class="play-button" href="/game/"><span class="play-icon">▶</span> PLAY PUZZLE RIVALS <span class="button-arrow">↗</span></a>
+      <div class="microcopy">BROWSER GAME · NO DOWNLOAD REQUIRED</div>
+      <div class="orb orb-a"></div><div class="orb orb-b"></div>
+      <div class="crosshair crosshair-a">✳</div><div class="crosshair crosshair-b">✳</div>
+    </section>
+    <section class="modes" id="about">
+      <div class="section-kicker">ONE RIVAL. MANY WAYS TO WIN.</div>
+      <h2>YOUR NEXT <span class="accent">CHALLENGE</span></h2>
+      <div class="mode-grid">
+        <article class="mode-card"><div class="mode-icon">⌁</div><h3> CIRCUIT SCRAMBLE</h3><p>Connect the pieces. Complete the circuit. Beat the clock.</p></article>
+        <article class="mode-card"><div class="mode-icon">▦</div><h3>MAZE RUSH</h3><p>Find the route, plan your moves, and stay one step ahead.</p></article>
+        <article class="mode-card"><div class="mode-icon">◇</div><h3>LINK LOCK</h3><p>Spot the pattern and make every connection count.</p></article>
+      </div>
+      <a class="text-play" href="/game/">READY TO PLAY? <span>LAUNCH THE GAME ↗</span></a>
+    </section>
+  </main>
+  <footer><span>© <span id="year"></span> PUZZLE RIVALS</span><span>BUILT FOR THE COMPETITIVE MIND.</span></footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
