@@ -1,1 +1,9 @@
-webgl-gzip-2026-10-31
+Puzzle Rivals WebGL build
+Build date: 2026-11-01
+Unity editor: 6000.4.7f1
+Unity source repository: TechsNtheCity940/Puzzle_rivalS
+Source base commit: 1996cbeecc9881d45217a785da7f77a9173242ff
+Source working tree: local changes included (AI-first ranked default, TileAnimator player-build fix, Unity package compatibility alignment)
+Matchmaking: local RankedBotController AI opponents by default; live online matchmaking is not enabled
+Endpoint verification: no mp.tesana.ai or tesana.ai strings in decompressed WebGL payloads
+Compression: gzip data and WASM; framework JavaScript served uncompressed for GitHub Pages compatibility

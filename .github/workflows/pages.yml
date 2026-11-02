@@ -36,6 +36,23 @@ jobs:
           test -f game/Build/PuzzleRivals-WebGL.data.gz
           test -f game/Build/PuzzleRivals-WebGL.framework.js
 
+      - name: Verify gzip assets and reject obsolete Tesana endpoint
+        shell: bash
+        run: |
+          gzip -t game/Build/PuzzleRivals-WebGL.data.gz game/Build/PuzzleRivals-WebGL.wasm.gz
+          grep -q "new DecompressionStream('gzip')" game/index.html
+          grep -q "application/wasm" game/index.html
+          grep -q 'PuzzleRivals-WebGL.data.gz' game/index.html
+          grep -q 'PuzzleRivals-WebGL.wasm.gz' game/index.html
+          if gzip -cd game/Build/PuzzleRivals-WebGL.data.gz game/Build/PuzzleRivals-WebGL.wasm.gz | grep -aiE 'mp\.tesana\.ai|tesana\.ai'; then
+            echo "::error::Obsolete Tesana matchmaking endpoint found in compressed game payload."
+            exit 1
+          fi
+          if grep -aiE 'mp\.tesana\.ai|tesana\.ai' game/Build/*.js game/index.html; then
+            echo "::error::Obsolete Tesana matchmaking endpoint found in game loader or page."
+            exit 1
+          fi
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 

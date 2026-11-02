@@ -5,13 +5,13 @@ Public website and published Unity WebGL player for [puzzlerivals.com](https://p
 ## Structure
 
 - `index.html` and `style.css`: public landing page
-- `game/`: production Unity WebGL build, deployed from the private source repository
 - `CNAME`: GitHub Pages custom domain
+- `game/`: production Unity WebGL build published by this repository's GitHub Pages workflow
 
 ## Deployment
 
-The private repository `TechsNtheCity940/Puzzle_rivalS` contains the Unity project and production build at `Build/PuzzleRivals-WebGL`. Its GitHub Actions workflow publishes that directory into this repository's `game/` directory.
+The Unity source project lives in `TechsNtheCity940/Puzzle_rivalS`. A verified WebGL build is staged into this repository's `game/` directory, then a push to `main` triggers `.github/workflows/pages.yml` to publish the site through GitHub Pages.
 
-GitHub Pages must be enabled for this repository and configured to publish the `main` branch from the repository root.
+The page keeps a browser-side gzip decoder for the compressed Unity data and WASM files because GitHub Pages does not provide configurable `Content-Encoding` response headers. The workflow validates gzip integrity and rejects the retired Tesana matchmaking endpoint before deployment.
 
-The WebGL client is static content. Online matchmaking, player accounts, persistence, and authoritative multiplayer services require a separately hosted backend.
+Ranked four-player matches currently use local AI bot opponents by default. Live online matchmaking is a later phase and is not represented as available until a real online service is implemented.
